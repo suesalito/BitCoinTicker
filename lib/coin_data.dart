@@ -18,6 +18,7 @@ const List<String> currenciesList = [
   'RUB',
   'SEK',
   'SGD',
+  'THB',
   'USD',
   'ZAR'
 ];
