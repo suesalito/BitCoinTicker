@@ -1,5 +1,5 @@
 const apikey = '?apikey=6136F18C-F8EC-4550-A883-591791ED2385';
-const defaultapi = 'https://rest.coinapi.io/v1/exchangerate/BTC/';
+const defaultapi = 'https://rest.coinapi.io/v1/exchangerate';
 
 const List<String> currenciesList = [
   'AUD',

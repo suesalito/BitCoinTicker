@@ -14,14 +14,15 @@ class PriceScreen extends StatefulWidget {
 }
 
 List<DropdownMenuItem<String>> dropDrowList = [];
-Map<String, double> rate = {};
+Map<String, String> rate = {};
 
 void setupMap() {
   double x = 10;
   for (String s in cryptoList) {
-    rate['$s'] = x;
-    x += 1;
-    print(rate['$s']);
+    rate['$s'] = 'Loading....';
+    // rate['$s'] = x.toString();
+    // x += 1;
+    // print(rate['$s']);
   }
   print(rate);
 }
@@ -88,6 +89,7 @@ class _PriceScreenState extends State<PriceScreen> {
           () {
             selectedCurrency = value;
             print(value);
+            getDataFromInput();
           },
         );
       },
@@ -147,38 +149,58 @@ class _PriceScreenState extends State<PriceScreen> {
   void getDataInitWithUSD() async {
 //     const apikey = '?apikey=BAE2F07A-6116-4268-9E27-FBF1FF142D82';
 // const defaultapi = 'https://rest.coinapi.io/v1/exchangerate/BTC/';
-    String inputUrl = '$defaultapi$selectedCurrency$apikey';
-    print(inputUrl);
-    var coinData = await getCoinExRate(inputUrl);
-    print(coinData['rate']);
-    priceBTC = coinData['rate'].toStringAsFixed(3);
-    print(priceBTC);
-    setState(() {
-      priceBTC = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
-    });
+    String inputUrl = '';
+    for (String s in cryptoList) {
+      inputUrl = '$defaultapi/$s/$selectedCurrency$apikey';
+      print(inputUrl);
+      var coinData = await getCoinExRate(inputUrl);
+      print(coinData['rate']);
+      rate['$s'] = coinData['rate'].toStringAsFixed(3);
+      print(rate['$s']);
+      setState(() {
+        rate['$s'] = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
+        //priceBTC = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
+      });
+    }
+    //print(inputUrl);
   }
 
   void getDataFromInput() async {
 //     const apikey = '?apikey=BAE2F07A-6116-4268-9E27-FBF1FF142D82';
 // const defaultapi = 'https://rest.coinapi.io/v1/exchangerate/BTC/';
     setState(() {
-      priceBTC = 'Loading...';
+      for (String s in cryptoList) {
+        rate['$s'] = 'Loading....';
+      }
     });
-    String inputUrl = '$defaultapi$selectedCurrency$apikey';
-    var coinData = await getCoinExRate(inputUrl);
-    print(coinData['rate']);
-    priceBTC = coinData['rate'].toStringAsFixed(3);
-    print(priceBTC);
-    setState(() {
-      priceBTC = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
-    });
+    String inputUrl = '';
+    for (String s in cryptoList) {
+      inputUrl = '$defaultapi/$s/$selectedCurrency$apikey';
+      print(inputUrl);
+      var coinData = await getCoinExRate(inputUrl);
+      print(coinData['rate']);
+      rate['$s'] = coinData['rate'].toStringAsFixed(3);
+      print(rate['$s']);
+      setState(() {
+        rate['$s'] = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
+        //priceBTC = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
+      });
+    }
+    // String inputUrl = '$defaultapi$selectedCurrency$apikey';
+    // var coinData = await getCoinExRate(inputUrl);
+    // print(coinData['rate']);
+    // priceBTC = coinData['rate'].toStringAsFixed(3);
+    // print(priceBTC);
+    // setState(() {
+    //   priceBTC = '${coinData['rate'].toStringAsFixed(3)} $selectedCurrency';
+    // });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     setupMap();
-    //getDataInitWithUSD();
+    getDataInitWithUSD();
     super.initState();
   }
 
@@ -194,6 +216,7 @@ class _PriceScreenState extends State<PriceScreen> {
         //children: cardCryptoList(),
         children: <Widget>[
           Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: cardCryptoList(),
             // children: <Widget>[
             //   Padding(
